@@ -35,5 +35,5 @@ I have worked on that project for about 3 days
 
 ## Improvements I would have done if I had more time or knowledge:
 better logic to determine which containers' logs to store ,
-caching the logs of the most used containers to reduce the use of DB,
+caching the logs of the most used or most recently used containers to reduce the use of DB,
 client-side with simple UI
