@@ -7,17 +7,18 @@ store their logs into storage and enable user to retrieve the logs.
 
 ## Runing
 to run the proggram use one of the following command:
-'''node . 
+```node . 
 node server.js 
-npm start'''
+npm start```
 
 ## Usage
 After running the server, it will connect to active containers and store their logs.
+
 optional GET request:
 ```
-http://localhost:8000/containers // retrieves all containers name stored in the DB
-http://localhost:8000/logger/:name/ // retrieves all logs for container name :name
-http://localhost:8000/logger/:name/:type // retrieves all logs for container name :name and type :type. optional types are: output / error
+http://localhost:8000/containers            // retrieves all containers name stored in the DB
+http://localhost:8000/logger/:name/         // retrieves all logs for container name :name
+http://localhost:8000/logger/:name/:type    // retrieves all logs for container name :name and type :type. optional types are: output / error
 ```
 ## What you learned from it
 From this project I have learned to 
