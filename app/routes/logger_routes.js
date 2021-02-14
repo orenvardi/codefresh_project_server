@@ -1,4 +1,4 @@
-var ObjectID = require('mongodb').ObjectID;/*maybe not necessary*/
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {  
 
@@ -60,45 +60,7 @@ module.exports = function(app, db) {
             }    
         });  
     });
-    
         
-    // app.get('/logger/:id', (req, res) => {    
-    //     const id = req.params.id;
-    //     const details = { 'containerId': id };    
-    //     db.collection('logger').find(details).toArray((err, items) => {
-    //         if (err) {        
-    //             res.send({'error':'An error has occurred'});      
-    //         } else {        
-    //             res.send(items);      
-    //         }    
-    //     });  
-    // });
-
-    // app.get('/logger/:id/:type', (req, res) => {  
-    //     const id = req.params.id;
-    //     const type = req.params.type;
-    //     const details = { 'containerId': id, 'type': type};    
-    //     db.collection('logger').find(details).toArray((err, item) => {
-    //         if (err) {        
-    //             res.send({'error':'An error has occurred'});      
-    //         } else {        
-    //             res.send(item);      
-    //         }    
-    //     });  
-    // });
-    
-    /***********************************************************/
-/*     app.post('/logger', (req, res) => { 
-        const log = { text: req.body.body, title: req.body.title }; 
-        db.collection('logger').insertOne(log, (err, result) => {      
-            if (err) {         
-                res.send({ 'error': 'An error has occurred '+err });       
-            } else {        
-                res.send(result.ops[0]);      
-            }    
-        });  
-    }); */
-    
     app.delete('/logger/:id', (req, res) => {    
         const id = req.params.id;    
         const details = { '_id': new ObjectID(id) };   
@@ -106,7 +68,7 @@ module.exports = function(app, db) {
             if (err) {        
                 res.send({'error':'An error has occurred'});      
             } else {        
-                res.send('Note ' + id + ' deleted!');      
+                res.send('All logs for container ' + id + ' deleted!');      
             }     
         });  
     });
@@ -117,21 +79,8 @@ module.exports = function(app, db) {
             if (err) {        
                 res.send({'error':'An error has occurred'});      
             } else {        
-                res.send('Notes deleted!');      
+                res.send('All logs deleted!');      
             }     
         });  
     });
-
-/*     app.put('/logger/:id', (req, res) => {    
-        const id = req.params.id;    
-        const details = { '_id': new ObjectID(id) };    
-        const log = { $set: {text: req.body.body, title: req.body.title }};    
-        db.collection('logger').updateOne(details, log, (err, result) => {      
-            if (err) {          
-                res.send({'error':'An error has occurred'});      
-            } else {          
-                res.send(log);      
-            }     
-        });  
-    }); */
 };

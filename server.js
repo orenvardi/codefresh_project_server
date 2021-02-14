@@ -3,33 +3,17 @@ const MongoClient = require("mongodb").MongoClient;
 const bodyParser = require("body-parser");
 const dbUrl = require("./config/db.js");
 
-const app = express();
+const serverRequests = require("./app/routes/server_requests");
+const userRequests = require("./app/routes");
 
+const app = express();
 const port = 8000;
 app.listen(port);
-
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var Docker = require("dockerode");
 var stream = require("stream");
 var docker = new Docker({ socketPath: "/var/run/docker.sock" });
-
-function postContainerToDB(client, containerInfo, chunk, type) {
-  const database = client.db("logger");
-  const log = {
-    containerId: containerInfo.containerId,
-    containerName: containerInfo.containerName,
-    containerImage: containerInfo.containerImage,
-    type: type,
-    log: chunk.toString("utf8").slice(0, -1),
-    time: new Date().toLocaleString(),
-  };
-  database.collection("logger").insertOne(log, (err, result) => {
-    if (err) {
-      console.log({ error: "An error has occurred " + err });
-    }
-  });
-}
 
 var readline = require("readline");
 var rl = readline.createInterface({
@@ -45,11 +29,11 @@ function containerLogs(client, containerInfo) {
   var logStreamErr = new stream.PassThrough();
 
   logStreamOut.on("data", function (chunk) {
-    postContainerToDB(client, containerInfo, chunk, "output");
+    serverRequests.postContainerToDB(client, containerInfo, chunk, "output");
   });
 
   logStreamErr.on("data", function (chunk) {
-    postContainerToDB(client, containerInfo, chunk, "error");
+    serverRequests.postContainerToDB(client, containerInfo, chunk, "error");
   });
 
   container.logs(
@@ -72,6 +56,8 @@ MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, 
       console.log("Error occurred while connecting to MongoDB Atlas...\n", err);
     }
 
+    const database = client.db("logger");
+
     docker.listContainers(function (err, containers) {
       if (err) {
         console.log(err);
@@ -82,8 +68,7 @@ MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, 
             containerName: containerInfo.Names[0].substring(1),
             containerImage: containerInfo.Image,
           };
-
-          require("./app/routes/containers")(database, info);
+          serverRequests.insertContainerToDB(database, info);
           containerLogs(client, info);
         });
       }
@@ -103,7 +88,8 @@ MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, 
                 containerName: details.Actor.Attributes.name,
                 containerImage: details.Actor.Attributes.image,
               };
-              require("./app/routes/containers")(database, info);
+              
+              serverRequests.insertContainerToDB(database, info);
               containerLogs(client, info);
             }
           });
@@ -112,8 +98,7 @@ MongoClient.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true }, 
     );
 
     // listener for requests from client on port 8000
-    const database = client.db("logger");
-    require("./app/routes")(app, database);
+    userRequests(app, database);
 
     //closing db connection and terminate proggram
     rl.on("line", function (line) {

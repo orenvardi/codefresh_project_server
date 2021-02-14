@@ -1,4 +1,4 @@
-var ObjectID = require('mongodb').ObjectID;/*maybe not necessary*/
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {  
 
@@ -19,7 +19,7 @@ module.exports = function(app, db) {
             if (err) {        
                 res.send({'error':'An error has occurred'});      
             } else {        
-                res.send('Note ' + id + ' deleted!');      
+                res.send('Container ' + id + ' deleted!');      
             }     
         });  
     });
