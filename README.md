@@ -7,9 +7,11 @@ store their logs into storage and enable user to retrieve the logs.
 
 ## Runing
 to run the proggram use one of the following command:
-```node . 
+```
+node . 
 node server.js 
-npm start```
+npm start
+```
 
 ## Usage
 After running the server, it will connect to active containers and store their logs.
