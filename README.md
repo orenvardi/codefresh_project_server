@@ -22,19 +22,18 @@ http://localhost:8000/containers            // retrieves all containers name sto
 http://localhost:8000/logger/:name/         // retrieves all logs for container name :name
 http://localhost:8000/logger/:name/:type    // retrieves all logs for container name :name and type :type. optional types are: output / error
 ```
-## What you learned from it
-From this project I have learned to 
-create server with node.js/Express
-working with mongoDB
-working with Postman
-dockers, images and containers
-dockerize a node.js program
+## From this project I have learned
+create server with node.js/Express,
+working with mongoDB,
+working with Postman,
+dockers, images and containers,
+dockerize a node.js program,
 using dockerode package for docker
 
 ## Time invested
 I have worked on that project for about 3 days
 
 ## Improvements I would have done if I had more time or knowledge:
-better logic to determine which containers' logs to store 
-caching the logs of the most used containers to reduce the use of DB
+better logic to determine which containers' logs to store ,
+caching the logs of the most used containers to reduce the use of DB,
 client-side with simple UI
