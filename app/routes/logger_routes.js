@@ -2,12 +2,51 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {  
 
-    app.get('/logger/', (req, res) => {    
-        db.collection("logger").distinct('containerName', (err, items) => {
+    app.get('/logger/:id', (req, res) => {   
+        const id = req.params.id;
+        const details = { 'containerId': id };   
+        
+          db.collection("containers").updateOne(
+            { 'containerId': id },
+            { $inc: {'useCounter': 1} },
+            { upsert: true },
+            (err, item) => {
+              if (err) {
+                res.send({ error: "An error has occurred" });
+              }
+            }
+          );
+
+        db.collection('logger').find(details).toArray((err, items) => {
             if (err) {        
                 res.send({'error':'An error has occurred'});      
             } else {        
                 res.send(items);      
+            }    
+        });  
+    });
+    
+    app.get('/logger/:id/:type', (req, res) => {  
+        const id = req.params.id;
+        const type = req.params.type;
+        const details = { 'containerId': id, 'type': type};    
+        
+        db.collection("containers").updateOne(
+            { 'containerId': id },
+            { $inc: {'useCounter': 1} },
+            { upsert: true },
+            (err, item) => {
+              if (err) {
+                res.send({ error: "An error has occurred" });
+              }
+            }
+          );
+        
+        db.collection('logger').find(details).toArray((err, item) => {
+            if (err) {        
+                res.send({'error':'An error has occurred'});      
+            } else {        
+                res.send(item);      
             }    
         });  
     });
