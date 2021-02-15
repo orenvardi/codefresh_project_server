@@ -18,9 +18,9 @@ After running the server, it will connect to active containers and store their l
 
 optional GET request:
 ```
-http://localhost:8000/containers            // retrieves all containers name stored in the DB
-http://localhost:8000/logger/:name/         // retrieves all logs for container name :name
-http://localhost:8000/logger/:name/:type    // retrieves all logs for container name :name and type :type. optional types are: output / error
+http://localhost:8000/containers            // retrieves all containers stored in the DB
+http://localhost:8000/logger/:id/         // retrieves all logs for container container ID :id
+http://localhost:8000/logger/:id/:type    // retrieves all logs for container container :id and type :type. optional types are: output / error
 ```
 ## From this project I have learned
 create server with node.js/Express,
